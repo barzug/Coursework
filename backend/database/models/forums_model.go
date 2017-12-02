@@ -61,7 +61,7 @@ func (forum *Forums) GetForumBySlug(pool *pgx.ConnPool) (Forums, error) {
 }
 
 func (forum *Forums) GetThreadsByForum(pool *pgx.ConnPool) ([]Threads, error) {
-	rows, err := pool.Query(`SELECT "tID", author, created, forum, message, slug, title, votes FROM threads WHERE forum = $1 ORDER BY created DESC`, forum.Slug)
+	rows, err := pool.Query(`SELECT author, created, forum, message, slug, title FROM threads WHERE forum = $1 ORDER BY created DESC`, forum.Slug)
 	if err != nil {
 		return nil, err
 	}
@@ -70,8 +70,8 @@ func (forum *Forums) GetThreadsByForum(pool *pgx.ConnPool) ([]Threads, error) {
 
 	currentThreadInRows := Threads{}
 	for rows.Next() {
-		rows.Scan(&currentThreadInRows.TID, &currentThreadInRows.Author, &currentThreadInRows.Created, &currentThreadInRows.Forum,
-			&currentThreadInRows.Message, &currentThreadInRows.Slug, &currentThreadInRows.Title, &currentThreadInRows.Votes)
+		rows.Scan(&currentThreadInRows.Author, &currentThreadInRows.Created, &currentThreadInRows.Forum,
+			&currentThreadInRows.Message, &currentThreadInRows.Slug, &currentThreadInRows.Title)
 		resultThreads = append(resultThreads, currentThreadInRows)
 	}
 	return resultThreads, nil

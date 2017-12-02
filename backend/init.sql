@@ -43,7 +43,6 @@ CREATE UNIQUE INDEX index_on_users_nickname
   ON users (nickname);
 
 CREATE TABLE "threads" (
-  "tID"     SERIAL,
   "author"  TEXT,
   "created" TIMESTAMP WITH TIME ZONE DEFAULT now(),
   "forum"   CITEXT,

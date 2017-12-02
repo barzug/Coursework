@@ -28,7 +28,7 @@ export default class ForumCreateView extends BaseView {
         </select>
         <div class="checkbox">
             <label>
-              <input type="checkbox" value="remember-me"> Можно удалять сообщения
+            <input type="checkbox" value="delete_message"> Можно удалять сообщения
             </label>
           </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Создать!</button>

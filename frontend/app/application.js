@@ -16,6 +16,8 @@ import SigninView from './views/formsview/signinview/signinview';
 import SignupView from './views/formsview/signupview/signupview';
 import NotFoundView from './views/notfoundview/notfoundview';
 import ForumCreateView from './views/forumcreateview/forumcreateview'
+import ThreadCreateView from './views/threadcreateview/threadcreateview'
+
 
 import UserService from './services/user-service';
 
@@ -36,6 +38,7 @@ const notFoundView = new NotFoundView(mainBlock);
 const signinView = new SigninView(mainBlock);
 const signupView = new SignupView(mainBlock);
 const forumCreateView = new ForumCreateView(mainBlock)
+const threadCreateView = new ThreadCreateView(mainBlock)
 
 const router = new Router();
 
@@ -44,7 +47,8 @@ router.setNotFoundPage(notFoundView);
 router.register('/', mainPageView)
     .register('/signin', signinView)
     .register('/signup', signupView)
-    .register('/create', forumCreateView)
+    .register('/createforum', forumCreateView)
+    .register('/createthread', threadCreateView)
     .start();
 
 

@@ -9,22 +9,14 @@ import (
 
 	"github.com/qiangxue/fasthttp-routing"
 	"github.com/valyala/fasthttp"
-
-	"strconv"
 )
 
 func GetOneThread(c *routing.Context) error {
-	slugOrId := c.Param("slug_or_id")
-
 	thread := models.Threads{}
 	var err error
-	if id, parseErr := strconv.ParseInt(slugOrId, 10, 64); parseErr == nil {
-		thread.TID = id
-		err = thread.GetThreadById(daemon.DB.Pool)
-	} else {
-		thread.Slug = slugOrId
-		err = thread.GetThreadBySlug(daemon.DB.Pool)
-	}
+	thread.Slug = c.Param("slug")
+	err = thread.GetThreadBySlug(daemon.DB.Pool)
+
 	if err != nil {
 		daemon.Render.JSON(c.RequestCtx, fasthttp.StatusNotFound, nil)
 		return nil
@@ -35,22 +27,16 @@ func GetOneThread(c *routing.Context) error {
 }
 
 func UpdateThread(c *routing.Context) error {
-	slugOrId := c.Param("slug_or_id")
-
 	thread := new(models.Threads)
 	if err := json.Unmarshal(c.PostBody(), thread); err != nil {
 		return err
 	}
-
 	prevThread := models.Threads{}
-	var err error
-	if id, parseErr := strconv.ParseInt(slugOrId, 10, 64); parseErr == nil {
-		prevThread.TID = id
-		err = prevThread.GetThreadById(daemon.DB.Pool)
-	} else {
-		prevThread.Slug = slugOrId
-		err = prevThread.GetThreadBySlug(daemon.DB.Pool)
-	}
+	prevThread.Slug = c.Param("slug")
+	thread.Slug = c.Param("slug")
+
+	err := prevThread.GetThreadBySlug(daemon.DB.Pool)
+
 	if err != nil {
 		daemon.Render.JSON(c.RequestCtx, fasthttp.StatusNotFound, nil)
 		return nil
