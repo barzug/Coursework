@@ -46,7 +46,7 @@ CREATE TABLE "threads" (
   "author"  TEXT,
   "created" TIMESTAMP WITH TIME ZONE DEFAULT now(),
   "forum"   CITEXT,
-  "message" TEXT,
+  "description" TEXT,
   "slug"    CITEXT,
   "title"   TEXT,
 ) WITH (
