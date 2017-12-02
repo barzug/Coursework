@@ -1,6 +1,5 @@
-import BaseView from '../../baseview';
-import validate from '../../../services/validation/registrationvalidator';
-import Router from '../../../modules/router';
+import BaseView from '../baseview';
+import Router from '../../modules/router';
 
 
 export default class ForumCreateView extends BaseView {
@@ -13,6 +12,30 @@ export default class ForumCreateView extends BaseView {
         this.formfields = ['email', 'login', 'password', 'passwordConfirm'];
     }
 
+    render() {
+        return `
+        <form class="form-signin">
+        <h2 class="form-signin-heading">Создайте форум</h2>
+        <input type="slug" class="form-control input-top" placeholder="Slug" required="" autofocus="">
+        <input type="title" class="form-control input-base" placeholder="Title" required="">
+        <textarea class="form-control input-bot" rows="3" placeholder="Описание"></textarea>
+
+        <select class="form-control d-block my-3" required>
+            <option value="">Выберите тип голосов</option>
+            <option value="1">Лайки и дизлайки</option>
+            <option value="2">Оценки</option>
+            <option value="3">Только лайки</option>
+        </select>
+        <div class="checkbox">
+            <label>
+              <input type="checkbox" value="remember-me"> Можно удалять сообщения
+            </label>
+          </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Создать!</button>
+    </form>`
+    }
+
+
     formReset() {
         this.form.reset();
     }
@@ -23,7 +46,7 @@ export default class ForumCreateView extends BaseView {
 
 
     create() {
-        this.element.innerHTML = this.template({});
+        this.element.innerHTML = this.render();
         this.form = this.element.querySelector('.registration-form__form');
         this.formErrorTextString = this.element.querySelector('.form__message');
 

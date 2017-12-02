@@ -12,6 +12,7 @@ type Forums struct {
 	Slug          string    `json:"slug"`
 	Threads       int32     `json:"threads"`
 	Title         string    `json:"title"`
+	Description   string    `json:"description"`
 	VoteType      int32     `json:"vote_type"`
 	DeleteMessage bool      `json:"delete_message"`
 	Created       time.Time `json:"created"`
@@ -20,9 +21,9 @@ type Forums struct {
 
 func (forum *Forums) CreateForum(pool *pgx.ConnPool) error {
 	var slug string
-	err := pool.QueryRow(`INSERT INTO forums(slug, title, author, vote_type, delete_message)`+
-		`VALUES ($1, $2, $3, $4, $5) RETURNING slug;`,
-		forum.Slug, forum.Title, forum.Author, forum.VoteType, forum.DeleteMessage).Scan(&slug)
+	err := pool.QueryRow(`INSERT INTO forums(slug, title, author, vote_type, delete_message, description)`+
+		`VALUES ($1, $2, $3, $4, $5, $6) RETURNING slug;`,
+		forum.Slug, forum.Title, forum.Author, forum.VoteType, forum.DeleteMessage, forum.Description).Scan(&slug)
 	if err != nil {
 		if pgerr, ok := err.(pgx.PgError); ok {
 			if pgerr.ConstraintName == "index_on_forums_slug" {
@@ -38,9 +39,9 @@ func (forum *Forums) CreateForum(pool *pgx.ConnPool) error {
 
 func (forum *Forums) UpdateForum(pool *pgx.ConnPool) error {
 	var slug string
-	err := pool.QueryRow(`UPDATE forums SET title = $1, vote_type = $2, delete_message = $3`+
-		`WHERE slug = $4 RETURNING slug;`,
-		forum.Title, forum.VoteType, forum.DeleteMessage, forum.Slug).Scan(&slug)
+	err := pool.QueryRow(`UPDATE forums SET title = $1, vote_type = $2, delete_message = $3, description = $4 `+
+		`WHERE slug = $5 RETURNING slug;`,
+		forum.Title, forum.VoteType, forum.DeleteMessage, forum.Description, forum.Slug).Scan(&slug)
 	if err != nil {
 		return err
 	}
@@ -49,32 +50,14 @@ func (forum *Forums) UpdateForum(pool *pgx.ConnPool) error {
 
 func (forum *Forums) GetForumBySlug(pool *pgx.ConnPool) (Forums, error) {
 	resultForum := Forums{}
-	err := pool.QueryRow(`SELECT slug, title, author, threads, vote_type, delete_message, created FROM forums WHERE slug = $1`,
+	err := pool.QueryRow(`SELECT slug, title, author, threads, vote_type, delete_message, created, description FROM forums WHERE slug = $1`,
 		forum.Slug).Scan(&resultForum.Slug, &resultForum.Title, &resultForum.Author, &resultForum.Threads,
-		&resultForum.VoteType, &resultForum.DeleteMessage, &resultForum.Created)
+		&resultForum.VoteType, &resultForum.DeleteMessage, &resultForum.Created, &resultForum.Description)
 
 	if err != nil {
 		return resultForum, err
 	}
 	return resultForum, nil
-}
-
-func (forum *Forums) GetForumsByUser(pool *pgx.ConnPool, author string) ([]Forums, error) {
-	resultForums := []Forums{}
-	rows, err := pool.Query(`SELECT slug, title, author, threads, vote_type, delete_message, created FROM forums WHERE author = $1 ORDER BY created DESC`, author)
-	if err != nil {
-		return nil, err
-	}
-
-	currentForumInRows := Forums{}
-	for rows.Next() {
-		rows.Scan(&currentForumInRows.Slug, &currentForumInRows.Title, &currentForumInRows.Author, &currentForumInRows.Threads,
-			&currentForumInRows.VoteType, &currentForumInRows.DeleteMessage, &currentForumInRows.Created)
-
-		resultForums = append(resultForums, currentForumInRows)
-	}
-
-	return resultForums, nil
 }
 
 func (forum *Forums) GetThreadsByForum(pool *pgx.ConnPool) ([]Threads, error) {

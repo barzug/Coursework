@@ -15,7 +15,7 @@ export default class MainPage extends BaseView {
         <p class="lead">текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст 
         текст текст текст текст текст </p>
         <p>
-            <a class="btn btn-lg btn-success" href="#" role="button">Создать!</a>
+            <a class="btn btn-lg btn-success" href="/create" role="button">Создать!</a>
         </p>
     </div>
 

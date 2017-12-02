@@ -9,6 +9,7 @@ CREATE TABLE "forums" (
   "slug"    CITEXT,
   "threads" INT4 DEFAULT '0',
   "title"   TEXT,
+  "description" TEXT,
   "vote_type" INT4,
   "delete_message" BOOLEAN,
   "author"  TEXT,

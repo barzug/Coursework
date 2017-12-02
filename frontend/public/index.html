@@ -9,8 +9,8 @@
 
 <body>
 	<div id="root" class="container">
-
-		<!-- <header class="header clearfix">
+<!-- 
+		<header class="header clearfix">
 			<div class="userblock">
 				<nav>
 					<ul class="nav nav-pills float-right">
@@ -27,16 +27,27 @@
 		</header>
 
 		<form class="form-signin">
-			<h2 class="form-signin-heading">Please sign in</h2>
-			<input type="email" class="form-control input-top" placeholder="Email address" required="" autofocus="">
-			<input type="nickname" class="form-control input-base" placeholder="Email address" required="">
-			<input type="password" class="form-control input-base" placeholder="Password" required="">
-			<input type="passwordConfirm" class="form-control input-bot" placeholder="Password" required="">        			
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+			<h2 class="form-signin-heading">Создайте форум</h2>
+			<input type="slug" class="form-control input-top" placeholder="Slug" required="" autofocus="">
+			<input type="title" class="form-control input-base" placeholder="Title" required="">
+			<textarea class="form-control input-bot" rows="3" placeholder="Описание"></textarea>
+
+			<select class="form-control d-block my-3" required>
+				<option value="">Выберите тип голосов</option>
+				<option value="1">Лайки и дизлайки</option>
+				<option value="2">Оценки</option>
+				<option value="3">Только лайки</option>
+			</select>
+			<div class="checkbox">
+				<label>
+				  <input type="checkbox" value="remember-me"> Можно удалять сообщения
+				</label>
+			  </div>
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Создать!</button>
 		</form> -->
 
 
-			<!-- <header class="header clearfix">
+		<!-- <header class="header clearfix">
 				<div class="userblock">
 					<nav>
 						<ul class="nav nav-pills float-right">
