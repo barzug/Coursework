@@ -19,9 +19,9 @@ import ForumCreateView from './views/forumcreateview/forumcreateview'
 import ThreadCreateView from './views/threadcreateview/threadcreateview'
 
 
-import UserService from './services/user-service';
+import BackendService from './services/backend-service';
 
-const userService = new UserService();
+const backendService = new BackendService();
 
 
 const root = new ApplicationView(document.getElementById("root"));
@@ -52,6 +52,6 @@ router.register('/', mainPageView)
     .start();
 
 
-userService.getData()
-    .then(() => authUserView.create())
-    .catch(() => unauthUserView.create());
+// backendService.getData()
+//     .then(() => authUserView.create())
+//     .catch(() => unauthUserView.create());

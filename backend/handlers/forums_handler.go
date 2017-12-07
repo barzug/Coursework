@@ -1,6 +1,9 @@
 package handlers
 
 import (
+	"fmt"
+	"log"
+
 	"../daemon"
 	"../database/models"
 	"../utils"
@@ -15,6 +18,7 @@ func CreateForum(c *routing.Context) error {
 
 	forum := new(models.Forums)
 	if err := json.Unmarshal(c.PostBody(), forum); err != nil {
+		fmt.Print(err)
 		return err
 	}
 
@@ -22,11 +26,14 @@ func CreateForum(c *routing.Context) error {
 
 	forumAuthor, err := author.GetUserByLogin(daemon.DB.Pool)
 	if err != nil {
+		fmt.Print(err)
 		daemon.Render.JSON(c.RequestCtx, fasthttp.StatusNotFound, nil)
 		return nil
 	}
 
 	forum.Author = forumAuthor.Nickname
+
+	log.Print(forum)
 
 	if err := forum.CreateForum(daemon.DB.Pool); err != nil {
 		if err == utils.UniqueError {

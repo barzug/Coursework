@@ -54,3 +54,5 @@ OIDS = FALSE
 DROP INDEX IF EXISTS threads_slug_key;
 
 CREATE UNIQUE INDEX threads_slug_key ON threads (slug) WHERE slug != '';
+
+INSERT INTO users (nickname, email, password) VALUES ('admin', 'admin@admin.ru', 'admin')

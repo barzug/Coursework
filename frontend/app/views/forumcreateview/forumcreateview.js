@@ -8,19 +8,17 @@ export default class ForumCreateView extends BaseView {
 
         this.form = null;
         this.formErrorTextString = null;
-
-        this.formfields = ['email', 'login', 'password', 'passwordConfirm'];
     }
 
     render() {
         return `
         <form class="form-signin">
         <h2 class="form-signin-heading">Создайте форум</h2>
-        <input type="slug" class="form-control input-top" placeholder="Slug" required="" autofocus="">
-        <input type="title" class="form-control input-base" placeholder="Title" required="">
-        <textarea class="form-control input-bot" rows="3" placeholder="Описание"></textarea>
+        <input name="slug" class="form-control input-top" placeholder="Slug" required="" autofocus="">
+        <input name="title" class="form-control input-base" placeholder="Title" required="">
+        <textarea name="description" class="form-control input-bot" rows="3" placeholder="Описание"></textarea>
 
-        <select class="form-control d-block my-3" required>
+        <select name="vote_type" class="form-control d-block my-3" required>
             <option value="">Выберите тип голосов</option>
             <option value="1">Лайки и дизлайки</option>
             <option value="2">Оценки</option>
@@ -28,7 +26,7 @@ export default class ForumCreateView extends BaseView {
         </select>
         <div class="checkbox">
             <label>
-            <input type="checkbox" value="delete_message"> Можно удалять сообщения
+            <input type="checkbox" class="delete_message"> Можно удалять сообщения
             </label>
           </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Создать!</button>
@@ -41,14 +39,14 @@ export default class ForumCreateView extends BaseView {
     }
 
     formError(errorText) {
-        this.formErrorTextString.textContent = errorText;
+        // this.formErrorTextString.textContent = errorText;
     }
 
 
     create() {
         this.element.innerHTML = this.render();
-        this.form = this.element.querySelector('.registration-form__form');
-        this.formErrorTextString = this.element.querySelector('.form__message');
+        this.form = this.element.querySelector('.form-signin');
+        // this.formErrorTextString = this.element.querySelector('.form__message');
 
         this.form.addEventListener('submit', () => {
             event.preventDefault();
@@ -60,21 +58,18 @@ export default class ForumCreateView extends BaseView {
         const formData = {};
         const elements = this.form.elements;
         for (let field in elements) {
-            if (elements[field].nodeName === 'INPUT') {
+            if (elements[field].nodeName === 'INPUT' || elements[field].nodeName === 'SELECT' || elements[field].nodeName === 'TEXTAREA') {
                 formData[elements[field].name] = elements[field].value;
             }
         }
 
-        const authValidation = validate(formData.email, formData.login, formData.password, formData.passwordConfirm);
-        if (authValidation !== null) {
-            this.formError(authValidation);
-            return;
-        }
+        let delete_message = this.element.querySelector('.delete_message').checked;
 
-        this.userService.signup(formData.email, formData.login, formData.password)
+
+        debugger;
+        this.backendService.forumCreate(formData.slug, formData.title, "admin", +formData.vote_type, delete_message, formData.description)
             .then(() => {
                 this.formReset();
-                this.eventBus.emit('user-block:auth');
                 (new Router()).go('/');
             })
 

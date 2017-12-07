@@ -12,7 +12,7 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
-const port = ":5000"
+const port = ":3001"
 
 func addRoutes(r *router.Routing) {
 	r.AddRoute(&router.Route{Method: "POST", Path: "/api/forum/create", Function: h.CreateForum})
