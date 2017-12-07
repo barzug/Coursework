@@ -4,11 +4,12 @@ export default function Send(address, method, body = {}) {
         mode: 'cors',
         // credentials: 'include',
         body: Object.keys(body).length === 0 ? {} : JSON.stringify(body),
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8'
-        }
+        // headers: {
+        //     'Content-Type': 'application/json; charset=utf-8'
+        // }
     })
         .then(function (response) {
+            debugger;
             let json = response.json();
             if (response.status >= 400) {
                 return json.then(response => {
@@ -16,5 +17,8 @@ export default function Send(address, method, body = {}) {
                 });
             }
             return json;
+        })
+        .catch(function (response) {
+            debugger;
         });
 }

@@ -34,8 +34,9 @@ func (r *Routing) Init() error {
 		}
 
 		r.Router.Options(route.Path, func(c *routing.Context) error {
-			c.Response.Header.Set("Access-Control-Allow-Origin", "*")
-			c.Response.Header.Set("Access-Control-Allow-Headers", "Content-Type")
+			c.Response.Header.Set("Access-Control-Allow-Origin", "http://localhost:3000")
+			c.Response.Header.Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+			c.Response.Header.Set("Access-Control-Allow-Headers", "*")
 			return nil
 		})
 	}

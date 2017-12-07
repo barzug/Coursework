@@ -52,6 +52,11 @@ func CreateForum(c *routing.Context) error {
 	}
 
 	daemon.Render.JSON(c.RequestCtx, fasthttp.StatusCreated, forum)
+
+	c.Response.Header.Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	c.Response.Header.Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+	c.Response.Header.Set("Access-Control-Allow-Headers", "*")
+
 	return nil
 }
 
