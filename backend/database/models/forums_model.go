@@ -10,7 +10,6 @@ import (
 
 type Forums struct {
 	Slug          string    `json:"slug"`
-	Threads       int32     `json:"threads"`
 	Title         string    `json:"title"`
 	Description   string    `json:"description"`
 	VoteType      int32     `json:"vote_type"`
@@ -50,8 +49,8 @@ func (forum *Forums) UpdateForum(pool *pgx.ConnPool) error {
 
 func (forum *Forums) GetForumBySlug(pool *pgx.ConnPool) (Forums, error) {
 	resultForum := Forums{}
-	err := pool.QueryRow(`SELECT slug, title, author, threads, vote_type, delete_message, created, description FROM forums WHERE slug = $1`,
-		forum.Slug).Scan(&resultForum.Slug, &resultForum.Title, &resultForum.Author, &resultForum.Threads,
+	err := pool.QueryRow(`SELECT slug, title, author, vote_type, delete_message, created, description FROM forums WHERE slug = $1`,
+		forum.Slug).Scan(&resultForum.Slug, &resultForum.Title, &resultForum.Author,
 		&resultForum.VoteType, &resultForum.DeleteMessage, &resultForum.Created, &resultForum.Description)
 
 	if err != nil {
@@ -61,7 +60,7 @@ func (forum *Forums) GetForumBySlug(pool *pgx.ConnPool) (Forums, error) {
 }
 
 func (forum *Forums) GetThreadsByForum(pool *pgx.ConnPool) ([]Threads, error) {
-	rows, err := pool.Query(`SELECT author, created, forum, message, slug, title FROM threads WHERE forum = $1 ORDER BY created DESC`, forum.Slug)
+	rows, err := pool.Query(`SELECT created, forum, description, slug, title FROM threads WHERE forum = $1 ORDER BY created DESC`, forum.Slug)
 	if err != nil {
 		return nil, err
 	}
@@ -70,8 +69,8 @@ func (forum *Forums) GetThreadsByForum(pool *pgx.ConnPool) ([]Threads, error) {
 
 	currentThreadInRows := Threads{}
 	for rows.Next() {
-		rows.Scan(&currentThreadInRows.Author, &currentThreadInRows.Created, &currentThreadInRows.Forum,
-			&currentThreadInRows.Message, &currentThreadInRows.Slug, &currentThreadInRows.Title)
+		rows.Scan(&currentThreadInRows.Created, &currentThreadInRows.Forum,
+			&currentThreadInRows.Description, &currentThreadInRows.Slug, &currentThreadInRows.Title)
 		resultThreads = append(resultThreads, currentThreadInRows)
 	}
 	return resultThreads, nil

@@ -7,7 +7,6 @@ DROP TABLE IF EXISTS "threads";
 
 CREATE TABLE "forums" (
   "slug"    CITEXT,
-  "threads" INT4 DEFAULT '0',
   "title"   TEXT,
   "description" TEXT,
   "vote_type" INT4,
@@ -43,12 +42,11 @@ CREATE UNIQUE INDEX index_on_users_nickname
   ON users (nickname);
 
 CREATE TABLE "threads" (
-  "author"  TEXT,
   "created" TIMESTAMP WITH TIME ZONE DEFAULT now(),
   "forum"   CITEXT,
   "description" TEXT,
   "slug"    CITEXT,
-  "title"   TEXT,
+  "title"   TEXT
 ) WITH (
 OIDS = FALSE
 );
@@ -56,8 +54,3 @@ OIDS = FALSE
 DROP INDEX IF EXISTS threads_slug_key;
 
 CREATE UNIQUE INDEX threads_slug_key ON threads (slug) WHERE slug != '';
-
-DROP INDEX IF EXISTS index_on_threads_tID;
-
-CREATE UNIQUE INDEX  index_on_threads_tID
-  ON threads ("tID")

@@ -17,7 +17,7 @@ class BackendService {
 
     status() {
         return HttpSend(`${this.baseUrl}/status`, 'GET', {});
-    }л
+    }
 }
 
 export default BackendService;

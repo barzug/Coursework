@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"sync"
-
 	"../daemon"
 	"../database/models"
 	"../utils"
@@ -99,38 +97,18 @@ func CreateThread(c *routing.Context) error {
 		return err
 	}
 
-	waitData := &sync.WaitGroup{}
-
-	var authorNickname string
-	var errAuthor error
-	waitData.Add(1)
-
-	go func(waitData *sync.WaitGroup) {
-		defer waitData.Done()
-		author := models.Users{Nickname: thread.Author}
-		author, errAuthor = author.GetUserByLogin(daemon.DB.Pool)
-		authorNickname = author.Nickname
-	}(waitData)
-
 	var forumSlug string
 	var errForum error
-	waitData.Add(1)
 
-	go func(waitData *sync.WaitGroup) {
-		defer waitData.Done()
-		forum := models.Forums{Slug: slug}
-		forum, errForum = forum.GetForumBySlug(daemon.DB.Pool)
-		forumSlug = forum.Slug
-	}(waitData)
+	forum := models.Forums{Slug: slug}
+	forum, errForum = forum.GetForumBySlug(daemon.DB.Pool)
+	forumSlug = forum.Slug
 
-	waitData.Wait()
-
-	if errAuthor != nil || errForum != nil {
+	if errForum != nil {
 		daemon.Render.JSON(c.RequestCtx, fasthttp.StatusNotFound, nil)
 		return nil
 	}
 
-	thread.Author = authorNickname
 	thread.Forum = forumSlug
 
 	if err := thread.CreateThread(daemon.DB.Pool); err != nil {

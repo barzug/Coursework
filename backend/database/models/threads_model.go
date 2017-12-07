@@ -8,7 +8,6 @@ import (
 )
 
 type Threads struct {
-	Author      string    `json:"author"`
 	Created     time.Time `json:"created"`
 	Forum       string    `json:"forum"`
 	Description string    `json:"description"`
@@ -25,9 +24,9 @@ func (thread *Threads) CreateThread(pool *pgx.ConnPool) error {
 
 	tx.Exec("UPDATE forums SET threads=threads+1 WHERE slug=$1", thread.Forum)
 
-	err = tx.QueryRow(`INSERT INTO threads (author, created, description, slug, title, forum)`+
+	err = tx.QueryRow(`INSERT INTO threads (created, description, slug, title, forum)`+
 		`VALUES ($1, $2, $3, $4, $5, $6) RETURNING, created;`,
-		thread.Author, thread.Created, thread.Description, thread.Slug, thread.Title, thread.Forum).Scan(&thread.Created)
+		thread.Created, thread.Description, thread.Slug, thread.Title, thread.Forum).Scan(&thread.Created)
 	if err != nil {
 		if pgerr, ok := err.(pgx.PgError); ok {
 			if pgerr.ConstraintName == "threads_slug_key" {
@@ -48,8 +47,8 @@ func (thread *Threads) CreateThread(pool *pgx.ConnPool) error {
 }
 
 func (thread *Threads) GetThreadBySlug(pool *pgx.ConnPool) error {
-	return pool.QueryRow(`SELECT author, created, forum, description, title, slug FROM threads WHERE slug = $1`,
-		thread.Slug).Scan(&thread.Author, &thread.Created, &thread.Forum,
+	return pool.QueryRow(`SELECT created, forum, description, title, slug FROM threads WHERE slug = $1`,
+		thread.Slug).Scan(&thread.Created, &thread.Forum,
 		&thread.Description, &thread.Title, &thread.Slug)
 
 }
