@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"log"
+
 	"../daemon"
 	"../database/models"
 	"../utils"
@@ -59,8 +61,13 @@ func GetForums(c *routing.Context) error {
 	user := new(models.Users)
 	user.Nickname = nickname
 
+	c.Response.Header.Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	c.Response.Header.Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+	c.Response.Header.Set("Access-Control-Allow-Headers", "*")
+
 	forumAuthor, err := user.GetUserByLogin(daemon.DB.Pool)
 	if err != nil {
+		log.Print(err)
 		daemon.Render.JSON(c.RequestCtx, fasthttp.StatusNotFound, nil)
 		return nil
 	}
@@ -69,8 +76,10 @@ func GetForums(c *routing.Context) error {
 	forums, err = forumAuthor.GetForumsByUser(daemon.DB.Pool)
 
 	if err != nil {
-		daemon.Render.JSON(c.RequestCtx, fasthttp.StatusBadRequest, nil)
+		log.Print(err)
+		daemon.Render.JSON(c.RequestCtx, fasthttp.StatusNotFound, nil)
 	}
 	daemon.Render.JSON(c.RequestCtx, fasthttp.StatusOK, forums)
+
 	return nil
 }
