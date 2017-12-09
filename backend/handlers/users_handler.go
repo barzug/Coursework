@@ -57,13 +57,13 @@ func GetUser(c *routing.Context) error {
 }
 
 func GetForums(c *routing.Context) error {
-	nickname := c.Param("nickname")
-	user := new(models.Users)
-	user.Nickname = nickname
-
 	c.Response.Header.Set("Access-Control-Allow-Origin", "http://localhost:3000")
 	c.Response.Header.Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
 	c.Response.Header.Set("Access-Control-Allow-Headers", "*")
+
+	nickname := c.Param("nickname")
+	user := new(models.Users)
+	user.Nickname = nickname
 
 	forumAuthor, err := user.GetUserByLogin(daemon.DB.Pool)
 	if err != nil {
@@ -71,7 +71,6 @@ func GetForums(c *routing.Context) error {
 		daemon.Render.JSON(c.RequestCtx, fasthttp.StatusNotFound, nil)
 		return nil
 	}
-
 	var forums []models.Forums
 	forums, err = forumAuthor.GetForumsByUser(daemon.DB.Pool)
 

@@ -3,8 +3,6 @@ import HttpSend from '../modules/http';
 class BackendService {
     constructor() {
         this.baseUrl = 'http://localhost:3001';
-        // window.localStorage['backendUrl'] = this.baseUrl;
-        // this.baseUrl = `${window.location.protocol}//${window.location.host}`;
     }
 
     forumCreate(slug, title, user, vote_type, delete_message, description) {
@@ -12,7 +10,7 @@ class BackendService {
     }
 
     getForums(nickname) {
-        return HttpSend(`${this.baseUrl}/api/user/nickname/forums`, 'GET', {});
+        return HttpSend(`${this.baseUrl}/api/user/${nickname}/forums`, 'GET', {});
     }
 
     forumDetails(slug) {

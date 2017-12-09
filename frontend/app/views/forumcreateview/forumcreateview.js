@@ -12,8 +12,8 @@ export default class ForumCreateView extends BaseView {
 
     render() {
         return `
-        <form class="form-signin">
-        <h2 class="form-signin-heading">Создайте форум</h2>
+        <form class="form">
+        <h2 class="form-heading">Создайте форум</h2>
         <input name="slug" class="form-control input-top" placeholder="Slug" required="" autofocus="">
         <input name="title" class="form-control input-base" placeholder="Title" required="">
         <textarea name="description" class="form-control input-bot" rows="3" placeholder="Описание"></textarea>
@@ -45,7 +45,7 @@ export default class ForumCreateView extends BaseView {
 
     create() {
         this.element.innerHTML = this.render();
-        this.form = this.element.querySelector('.form-signin');
+        this.form = this.element.querySelector('.form');
         // this.formErrorTextString = this.element.querySelector('.form__message');
 
         this.form.addEventListener('submit', () => {
@@ -58,7 +58,7 @@ export default class ForumCreateView extends BaseView {
         const formData = {};
         const elements = this.form.elements;
         for (let field in elements) {
-            if (elements[field].nodeName === 'INPUT' || elements[field].nodeName === 'SELECT' || elements[field].nodeName === 'TEXTAREA') {
+            if (elements[field].nodeName === 'INPUT' || elements[field].nodeName === 'TEXTAREA') {
                 formData[elements[field].name] = elements[field].value;
             }
         }

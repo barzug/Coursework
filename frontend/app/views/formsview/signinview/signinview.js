@@ -15,8 +15,8 @@ export default class SigninView extends BaseView {
 
     render() {
         return `
-        <form class="form-signin">
-        <h2 class="form-signin-heading">Войдите</h2>
+        <form class="form">
+        <h2 class="form-heading">Войдите</h2>
         <input type="nickname" class="form-control input-top" placeholder="Email или логин" required="" autofocus="">
         <input type="password" class="form-control input-bot" placeholder="Пароль" required="">
         <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>

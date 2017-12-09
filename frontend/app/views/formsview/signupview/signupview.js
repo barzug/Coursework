@@ -13,8 +13,8 @@ export default class SignupView extends BaseView {
 
     render() {
         return `
-        <form class="form-signin">
-        <h2 class="form-signin-heading">Зарегистрируйтесь</h2>
+        <form class="form">
+        <h2 class="form-heading">Зарегистрируйтесь</h2>
         <input type="email" class="form-control input-top" placeholder="Email" required="" autofocus="">
         <input type="nickname" class="form-control input-base" placeholder="Логин" required="">
         <input type="password" class="form-control input-base" placeholder="Пароль" required="">

@@ -9,7 +9,6 @@ export default function Send(address, method, body = {}) {
         // }
     })
         .then(function (response) {
-            debugger;
             let json = response.json();
             if (response.status >= 400) {
                 return json.then(response => {
@@ -17,8 +16,5 @@ export default function Send(address, method, body = {}) {
                 });
             }
             return json;
-        })
-        .catch(function (response) {
-            debugger;
         });
 }

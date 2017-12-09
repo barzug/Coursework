@@ -8,13 +8,16 @@ export default class MainPage extends BaseView {
     create() {
         this.element.innerHTML = this.render();
 
+        this.forumList = this.element.querySelector('.forum-list');
+
         this.backendService.getForums("admin")
             .then((data) => {
-                debugger;
+                data.forEach(element => {
+                    this.forumList.insertAdjacentHTML(`beforeEnd`, this.renderForum(element.title, element.description, element.slug));
+                })
             })
-
             .catch((err) => {
-
+                console.log(err)
             });
     }
 
@@ -29,13 +32,14 @@ export default class MainPage extends BaseView {
     </div>
 
     <div class="row marketing">
-
+    <div class="col-lg-12 forum-list">
+    </div>
     </div>
         `
     }
 
     renderForum(title, slug, description) {
-        `
+        return `
     <div class="card mb-3">
     <div class="card-body">
         <h4 class="card-title">${title}</h4>
