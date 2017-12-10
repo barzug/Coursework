@@ -58,7 +58,7 @@ export default class ForumCreateView extends BaseView {
         const formData = {};
         const elements = this.form.elements;
         for (let field in elements) {
-            if (elements[field].nodeName === 'INPUT' || elements[field].nodeName === 'TEXTAREA') {
+            if (elements[field].nodeName === 'INPUT' || elements[field].nodeName === 'TEXTAREA' || elements[field].nodeName === 'SELECT') {
                 formData[elements[field].name] = elements[field].value;
             }
         }

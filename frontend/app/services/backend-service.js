@@ -10,7 +10,7 @@ class BackendService {
     }
 
     threadCreate(forum_slug, slug, title, user, description) {
-        return HttpSend(`${this.baseUrl}/api/forum/${forum_slug}/create`, 'POST', {slug, title, user,  description});
+        return HttpSend(`${this.baseUrl}/api/forum/${forum_slug}/create`, 'POST', {slug, title, user, description});
     }
 
     getForums(nickname) {
@@ -19,6 +19,10 @@ class BackendService {
 
     forumDetails(slug) {
         return HttpSend(`${this.baseUrl}/api/forum/${slug}/details`, 'GET', {});
+    }
+
+    getThreads(slug) {
+        return HttpSend(`${this.baseUrl}/api/forum/${slug}/threads`, 'GET', {});
     }
 
     status() {

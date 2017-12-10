@@ -2,8 +2,8 @@ package daemon
 
 import (
 	"../database"
-	"github.com/jackc/pgx"
 	"github.com/fasthttp-contrib/render"
+	"github.com/jackc/pgx"
 )
 
 func afterConnect(conn *pgx.Conn) error {
@@ -11,7 +11,7 @@ func afterConnect(conn *pgx.Conn) error {
 }
 
 var (
-	DB database.DbFacade
+	DB     database.DbFacade
 	Render = render.New()
 )
 
@@ -33,4 +33,3 @@ func Init(host, database, user, password string, connections int) error {
 
 	return nil
 }
-

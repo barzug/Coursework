@@ -15,7 +15,6 @@ import (
 )
 
 func CreateForum(c *routing.Context) error {
-
 	forum := new(models.Forums)
 	if err := json.Unmarshal(c.PostBody(), forum); err != nil {
 		fmt.Print(err)
@@ -61,6 +60,10 @@ func CreateForum(c *routing.Context) error {
 }
 
 func GetOneForum(c *routing.Context) error {
+	c.Response.Header.Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	c.Response.Header.Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+	c.Response.Header.Set("Access-Control-Allow-Headers", "*")
+
 	slug := c.Param("slug")
 	forum := new(models.Forums)
 	forum.Slug = slug
@@ -103,6 +106,10 @@ func UpdateForum(c *routing.Context) error {
 }
 
 func CreateThread(c *routing.Context) error {
+	c.Response.Header.Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	c.Response.Header.Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+	c.Response.Header.Set("Access-Control-Allow-Headers", "*")
+
 	slug := c.Param("slug")
 	thread := new(models.Threads)
 	if err := json.Unmarshal(c.PostBody(), thread); err != nil {
@@ -123,12 +130,15 @@ func CreateThread(c *routing.Context) error {
 
 	thread.Forum = forumSlug
 
+	log.Print(thread)
+
 	if err := thread.CreateThread(daemon.DB.Pool); err != nil {
 		if err == utils.UniqueError {
 			err := thread.GetThreadBySlug(daemon.DB.Pool)
 
 			if err != nil {
 				daemon.Render.JSON(c.RequestCtx, fasthttp.StatusBadRequest, nil)
+				log.Print(err)
 				return err
 			}
 
@@ -136,6 +146,7 @@ func CreateThread(c *routing.Context) error {
 			return nil
 		}
 		daemon.Render.JSON(c.RequestCtx, fasthttp.StatusBadRequest, nil)
+		log.Print(err)
 		return nil
 	}
 	daemon.Render.JSON(c.RequestCtx, fasthttp.StatusCreated, thread)
@@ -143,6 +154,10 @@ func CreateThread(c *routing.Context) error {
 }
 
 func GetThreads(c *routing.Context) error {
+	c.Response.Header.Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	c.Response.Header.Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+	c.Response.Header.Set("Access-Control-Allow-Headers", "*")
+
 	slug := c.Param("slug")
 	forum := new(models.Forums)
 	forum.Slug = slug

@@ -13,7 +13,7 @@ export default class MainPage extends BaseView {
         this.backendService.getForums("admin")
             .then((data) => {
                 data.forEach(element => {
-                    this.forumList.insertAdjacentHTML(`beforeEnd`, this.renderForum(element.title, element.description, element.slug));
+                    this.forumList.insertAdjacentHTML(`beforeEnd`, this.renderForum(element.title, element.slug, element.description));
                 })
             })
             .catch((err) => {
@@ -27,7 +27,7 @@ export default class MainPage extends BaseView {
         <p class="lead">текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст 
         текст текст текст текст текст </p>
         <p>
-            <a class="btn btn-lg btn-success" href="/createforum" role="button">Создать!</a>
+            <a class="btn btn-lg btn-success mainbtn" href="/createforum" role="button">Создать!</a>
         </p>
     </div>
 

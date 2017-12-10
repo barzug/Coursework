@@ -41,18 +41,17 @@ export default class ThreadCreateView extends BaseView {
         const formData = {};
         const elements = this.form.elements;
         for (let field in elements) {
-            if (elements[field].nodeName === 'INPUT') {
+            if (elements[field].nodeName === 'INPUT' || elements[field].nodeName === 'TEXTAREA') {
                 formData[elements[field].name] = elements[field].value;
             }
         }
 
-        forum_slug = window.location.href.split(`/`)[4]
-        this.backendService.threadCreate(formData.slug, formData.slug, formData.title, "admin", formData.description)
+        this.forum_slug = window.location.href.split(`/`)[4]
+        this.backendService.threadCreate(this.forum_slug, formData.slug, formData.title, "admin", formData.description)
             .then(() => {
                 this.formReset();
-                (new Router()).go(`/forum/${forum_slug}`);
+                (new Router()).go(`/forum/${this.forum_slug}`);
             })
-
-            .catch((err) => this.formError(err.error));
+            .catch((err) => console.log(err.error));
     }
 }

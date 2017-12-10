@@ -22,10 +22,8 @@ func (thread *Threads) CreateThread(pool *pgx.ConnPool) error {
 	}
 	defer tx.Rollback()
 
-	tx.Exec("UPDATE forums SET threads=threads+1 WHERE slug=$1", thread.Forum)
-
 	err = tx.QueryRow(`INSERT INTO threads (created, description, slug, title, forum)`+
-		`VALUES ($1, $2, $3, $4, $5, $6) RETURNING, created;`,
+		`VALUES ($1, $2, $3, $4, $5) RETURNING created;`,
 		thread.Created, thread.Description, thread.Slug, thread.Title, thread.Forum).Scan(&thread.Created)
 	if err != nil {
 		if pgerr, ok := err.(pgx.PgError); ok {
