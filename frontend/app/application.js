@@ -44,11 +44,15 @@ const router = new Router();
 
 router.setNotFoundPage(notFoundView);
 
-router.register('/', mainPageView)
-    .register('/signin', signinView)
-    .register('/signup', signupView)
-    .register('/createforum', forumCreateView)
-    .register('/createthread', threadCreateView)
+router.register(/^\/$/, mainPageView)
+    .register(/^\/signin$/, signinView)
+    .register(/^\/signup$/, signupView)
+    .register(/^\/createforum$/, forumCreateView)
+    .register(/^\/forum\/[a-z,_,-]+$/, forumCreateView)   
+    .register(/^\/forum\/[a-z,_,-]+\/change$/, forumCreateView)        
+    .register(/^\/forum\/[a-z,_,-]+\/createthread$/, threadCreateView)
+    .register(/^\/thread\/[a-z,_,-]+$/, forumCreateView)
+    .register(/^\/thread\/[a-z,_,-]+\/change$/, forumCreateView)    
     .start();
 
 

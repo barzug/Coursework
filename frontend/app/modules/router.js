@@ -6,13 +6,13 @@ export default class Router {
             return Router.__instance;
         }
 
-        this.routes = new Map();
+        this.routes = [];
 
         Router.__instance = this;
     }
 
     register(path, view) {
-        this.routes.set(path, view);
+        this.routes.push({ path: path, view: view });
         return this;
     }
 
@@ -40,26 +40,24 @@ export default class Router {
         this.go(window.location.pathname);
     }
 
-    go(urlPath) {
-        let [path, getParamsString] = urlPath.split('?');
-        const getParamsObject = (getParamsString) ?
-            JSON.parse(`{"${getParamsString.replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"')}"}`) :
-            {};
+    go(route) {
+        this.routes.find(info => {
+            if (!info.path.test(route)) {
+                return false;
+            }
 
-        let view = this.routes.get(path);
-        if (!view) {
-            view = this.page404;
-        }
+            if (window.location.pathname !== route) {
+                window.history.pushState({}, '', route);
+            }
 
-        if (window.location.pathname !== urlPath) {
-            window.history.pushState({}, '', urlPath);
-        }
+            if (this.current) {
+                this.current.destroy();
+            }
 
-        if (this.current) {
-            this.current.destroy();
-        }
+            info.view.create();
+            this.currentView = info.view;
 
-        view.create(getParamsObject);
-        this.current = view;
+            return true;
+        });
     }
 }

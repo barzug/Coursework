@@ -9,6 +9,10 @@ class BackendService {
         return HttpSend(`${this.baseUrl}/api/forum/create`, 'POST', {slug, title, user, vote_type, delete_message, description});
     }
 
+    threadCreate(forum_slug, slug, title, user, description) {
+        return HttpSend(`${this.baseUrl}/api/forum/${forum_slug}/create`, 'POST', {slug, title, user,  description});
+    }
+
     getForums(nickname) {
         return HttpSend(`${this.baseUrl}/api/user/${nickname}/forums`, 'GET', {});
     }
