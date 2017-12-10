@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"log"
+
 	"../daemon"
 	"../database/models"
 	"../utils"
@@ -12,12 +14,17 @@ import (
 )
 
 func GetOneThread(c *routing.Context) error {
+	c.Response.Header.Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	c.Response.Header.Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+	c.Response.Header.Set("Access-Control-Allow-Headers", "*")
+
 	thread := models.Threads{}
 	var err error
 	thread.Slug = c.Param("slug")
 	err = thread.GetThreadBySlug(daemon.DB.Pool)
 
 	if err != nil {
+		log.Print(err)
 		daemon.Render.JSON(c.RequestCtx, fasthttp.StatusNotFound, nil)
 		return nil
 	}

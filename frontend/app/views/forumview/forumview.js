@@ -18,7 +18,7 @@ export default class ForumView extends BaseView {
                 this.backendService.getThreads(forum_slug)
                     .then((data) => {
                         data.forEach(element => {
-                            this.threadList.insertAdjacentHTML(`beforeEnd`, this.renderThread(element.title, element.description, element.slug));
+                            this.threadList.insertAdjacentHTML(`beforeEnd`, this.renderThread(element.title, element.slug, element.description));
                         })
                     })
             })
@@ -73,7 +73,7 @@ export default class ForumView extends BaseView {
         <h4 class="card-title">${title}</h4>
         <h6 class="card-subtitle mb-2 text-muted">${slug}</h6>
         <p class="card-text">${description}</p>
-        <a href="/forum/${slug}">Подробнее</a>
+        <a href="/thread/${slug}">Подробнее</a>
     </div>
 </div>`
 

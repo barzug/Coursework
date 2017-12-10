@@ -16,7 +16,9 @@ import SigninView from './views/formsview/signinview/signinview';
 import SignupView from './views/formsview/signupview/signupview';
 import NotFoundView from './views/notfoundview/notfoundview';
 import ForumCreateView from './views/forumcreateview/forumcreateview'
+import ThreadView from './views/threadview/threadview'
 import ForumView from './views/forumview/forumview'
+
 import ThreadCreateView from './views/threadcreateview/threadcreateview'
 
 
@@ -40,6 +42,7 @@ const signinView = new SigninView(mainBlock);
 const signupView = new SignupView(mainBlock);
 const forumCreateView = new ForumCreateView(mainBlock)
 const forumView = new ForumView(mainBlock)
+const threadView = new ThreadView(mainBlock)
 const threadCreateView = new ThreadCreateView(mainBlock)
 
 const router = new Router();
@@ -51,10 +54,9 @@ router.register(/^\/$/, mainPageView)
     .register(/^\/signup$/, signupView)
     .register(/^\/createforum$/, forumCreateView)
     .register(/^\/forum\/[a-z,_,-]+$/, forumView)   
-    .register(/^\/forum\/[a-z,_,-]+\/change$/, forumCreateView)        
     .register(/^\/forum\/[a-z,_,-]+\/createthread$/, threadCreateView)
+    .register(/^\/thread\/[a-z,_,-]+$/, threadView)       
     .register(/^\/thread\/[a-z,_,-]+$/, forumCreateView)
-    .register(/^\/thread\/[a-z,_,-]+\/change$/, forumCreateView)    
     .start();
 
 

@@ -21,12 +21,12 @@ class BackendService {
         return HttpSend(`${this.baseUrl}/api/forum/${slug}/details`, 'GET', {});
     }
 
-    getThreads(slug) {
-        return HttpSend(`${this.baseUrl}/api/forum/${slug}/threads`, 'GET', {});
+    threadDetails(slug) {
+        return HttpSend(`${this.baseUrl}/api/thread/${slug}/details`, 'GET', {});
     }
 
-    status() {
-        return HttpSend(`${this.baseUrl}/status`, 'GET', {});
+    getThreads(slug) {
+        return HttpSend(`${this.baseUrl}/api/forum/${slug}/threads`, 'GET', {});
     }
 
     signup(email, login, password) {
@@ -35,13 +35,6 @@ class BackendService {
 
     login(login, password) {
         return HttpSend(`${this.baseUrl}/signin`, 'POST', { login, password });
-    }
-
-    getData() {
-        return HttpSend(`${this.baseUrl}/currentUser`, 'GET', {})
-            .then(userdata => {
-                return userdata;
-            });
     }
 
     logout() {

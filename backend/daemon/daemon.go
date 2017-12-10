@@ -26,10 +26,10 @@ func Init(host, database, user, password string, connections int) error {
 		return err
 	}
 
-	err = DB.InitSchema()
-	if err != nil {
-		return err
-	}
+	// err = DB.InitSchema()
+	// if err != nil {
+	// 	return err
+	// }
 
 	return nil
 }
