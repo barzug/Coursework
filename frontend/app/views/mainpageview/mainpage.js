@@ -24,8 +24,8 @@ export default class MainPage extends BaseView {
     render() {
         return `
         <h1 class="display-3">Создание форумов</h1>
-        <p class="lead">текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст 
-        текст текст текст текст текст </p>
+        <p class="lead">Здравствуйте! Вы находитесь на главной странице веб-приложения для
+         создания интернет-форумов. Нажмите кнопку создать!</p>
         <p>
             <a class="btn btn-lg btn-success mainbtn" href="/createforum" role="button">Создать!</a>
         </p>

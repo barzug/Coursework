@@ -63,3 +63,5 @@ router.register(/^\/$/, mainPageView)
 // backendService.getData()
 //     .then(() => authUserView.create())
 //     .catch(() => unauthUserView.create());
+
+authUserView.create()

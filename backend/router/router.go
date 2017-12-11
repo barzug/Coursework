@@ -7,33 +7,41 @@ import (
 )
 
 type Route struct {
-	Method   string
-	Path     string
-	Function func(context *routing.Context) error
+	method   string
+	path     string
+	function func(context *routing.Context) error
+}
+
+func NewRoute(method, path string, function func(context *routing.Context) error) *Route {
+	r := new(Route)
+	r.method = method
+	r.path = path
+	r.function = function
+	return r
 }
 
 type Routing struct {
-	Routes []Route
+	routes []Route
 	Router *routing.Router
 }
 
 func (r *Routing) AddRoute(route *Route) {
-	r.Routes = append(r.Routes, *route)
+	r.routes = append(r.routes, *route)
 }
 
 func (r *Routing) Init() error {
 	r.Router = routing.New()
-	for _, route := range r.Routes {
-		switch route.Method {
+	for _, route := range r.routes {
+		switch route.method {
 		case "POST":
-			r.Router.Post(route.Path, route.Function)
+			r.Router.Post(route.path, route.function)
 		case "GET":
-			r.Router.Get(route.Path, route.Function)
+			r.Router.Get(route.path, route.function)
 		default:
 			return errors.New("Api doesn't support this method!")
 		}
 
-		r.Router.Options(route.Path, func(c *routing.Context) error {
+		r.Router.Options(route.path, func(c *routing.Context) error {
 			c.Response.Header.Set("Access-Control-Allow-Origin", "http://localhost:3000")
 			c.Response.Header.Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
 			c.Response.Header.Set("Access-Control-Allow-Headers", "*")

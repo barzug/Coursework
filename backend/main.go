@@ -15,22 +15,22 @@ import (
 const port = ":3001"
 
 func addRoutes(r *router.Routing) {
-	r.AddRoute(&router.Route{Method: "POST", Path: "/api/forum/create", Function: h.CreateForum})
+	r.AddRoute(router.NewRoute("POST", "/api/forum/create", h.CreateForum))
 
-	r.AddRoute(&router.Route{Method: "GET", Path: "/api/forum/<slug>/details", Function: h.GetOneForum})
-	r.AddRoute(&router.Route{Method: "POST", Path: "/api/forum/<slug>/details", Function: h.UpdateForum})
+	r.AddRoute(router.NewRoute("GET", "/api/forum/<slug>/details", h.GetOneForum))
+	r.AddRoute(router.NewRoute("POST", "/api/forum/<slug>/details", h.UpdateForum))
 
-	r.AddRoute(&router.Route{Method: "POST", Path: "/api/forum/<slug>/create", Function: h.CreateThread})
-	r.AddRoute(&router.Route{Method: "GET", Path: "/api/forum/<slug>/threads", Function: h.GetThreads})
+	r.AddRoute(router.NewRoute("POST", "/api/forum/<slug>/create", h.CreateThread))
+	r.AddRoute(router.NewRoute("GET", "/api/forum/<slug>/threads", h.GetThreads))
 
-	r.AddRoute(&router.Route{Method: "GET", Path: "/api/thread/<slug>/details", Function: h.GetOneThread})
-	r.AddRoute(&router.Route{Method: "POST", Path: "/api/thread/<slug>/details", Function: h.UpdateThread})
+	r.AddRoute(router.NewRoute("GET", "/api/thread/<slug>/details", h.GetOneThread))
+	r.AddRoute(router.NewRoute("POST", "/api/thread/<slug>/details", h.UpdateThread))
 
-	r.AddRoute(&router.Route{Method: "POST", Path: "/api/user/<nickname>/create", Function: h.CreateUser})
-	r.AddRoute(&router.Route{Method: "GET", Path: "/api/user/<nickname>/profile", Function: h.GetUser})
-	r.AddRoute(&router.Route{Method: "GET", Path: "/api/user/<nickname>/forums", Function: h.GetForums})
+	r.AddRoute(router.NewRoute("POST", "/api/user/<nickname>/create", h.CreateUser))
+	r.AddRoute(router.NewRoute("GET", "/api/user/<nickname>/profile", h.GetUser))
+	r.AddRoute(router.NewRoute("GET", "/api/user/<nickname>/forums", h.GetForums))
 
-	r.AddRoute(&router.Route{Method: "POST", Path: "/api/service/clear", Function: h.ClearDB})
+	r.AddRoute(router.NewRoute("POST", "/api/service/clear", h.ClearDB))
 }
 
 func main() {

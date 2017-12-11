@@ -36,10 +36,7 @@ export default class AuthUserView extends BaseView {
         return `<nav>
             <ul class="nav nav-pills float-right">
                 <li class="nav-item">
-                    <p class="nav-link">Здравствуйте</p>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link">Выйти</a>
+                    <a class="nav-link" href="/signup">Выйти</a>
                 </li>
             </ul>
         </nav>`
