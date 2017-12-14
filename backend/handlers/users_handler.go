@@ -57,20 +57,26 @@ func GetUser(c *routing.Context) error {
 }
 
 func GetForums(c *routing.Context) error {
+	// выставляем заголовки, необходимые для кросс-доменного взаимодействия
 	c.Response.Header.Set("Access-Control-Allow-Origin", "http://localhost:3000")
 	c.Response.Header.Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
 	c.Response.Header.Set("Access-Control-Allow-Headers", "*")
 
+	// получаем параметр из маршрута
 	nickname := c.Param("nickname")
+
+	// создаем пользователя
 	user := new(models.Users)
 	user.Nickname = nickname
 
+	// проверяем существует ли такой пользователь
 	forumAuthor, err := user.GetUserByLogin(daemon.DB.Pool)
 	if err != nil {
 		log.Print(err)
 		daemon.Render.JSON(c.RequestCtx, fasthttp.StatusNotFound, nil)
 		return nil
 	}
+
 	var forums []models.Forums
 	forums, err = forumAuthor.GetForumsByUser(daemon.DB.Pool)
 

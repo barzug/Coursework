@@ -89,7 +89,8 @@ func (user *Users) UpdateUser(pool *pgx.ConnPool) error {
 
 func (user *Users) GetForumsByUser(pool *pgx.ConnPool) ([]Forums, error) {
 	resultForums := []Forums{}
-	rows, err := pool.Query(`SELECT slug, title, author, vote_type, delete_message, created, description FROM forums WHERE author = $1 ORDER BY created DESC`, user.Nickname)
+	rows, err := pool.Query(`SELECT slug, title, author, vote_type, delete_message,
+		 created, description FROM forums WHERE author = $1 ORDER BY created DESC`, user.Nickname)
 	if err != nil {
 		return nil, err
 	}
@@ -97,7 +98,8 @@ func (user *Users) GetForumsByUser(pool *pgx.ConnPool) ([]Forums, error) {
 	currentForumInRows := Forums{}
 	for rows.Next() {
 		rows.Scan(&currentForumInRows.Slug, &currentForumInRows.Title, &currentForumInRows.Author,
-			&currentForumInRows.VoteType, &currentForumInRows.DeleteMessage, &currentForumInRows.Created, &currentForumInRows.Description)
+			&currentForumInRows.VoteType, &currentForumInRows.DeleteMessage,
+			&currentForumInRows.Created, &currentForumInRows.Description)
 
 		resultForums = append(resultForums, currentForumInRows)
 	}

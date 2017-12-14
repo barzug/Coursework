@@ -20,10 +20,14 @@ type Forums struct {
 
 func (forum *Forums) CreateForum(pool *pgx.ConnPool) error {
 	var slug string
+
+	// выполняем запрос на добавление данных
 	err := pool.QueryRow(`INSERT INTO forums(slug, title, author, vote_type, delete_message, description)`+
 		`VALUES ($1, $2, $3, $4, $5, $6) RETURNING slug;`,
 		forum.Slug, forum.Title, forum.Author, forum.VoteType, forum.DeleteMessage, forum.Description).Scan(&slug)
 	if err != nil {
+
+		// проверяем была ли это ошибка уникальности
 		if pgerr, ok := err.(pgx.PgError); ok {
 			if pgerr.ConstraintName == "index_on_forums_slug" {
 				return utils.UniqueError

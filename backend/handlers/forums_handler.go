@@ -154,23 +154,31 @@ func CreateThread(c *routing.Context) error {
 }
 
 func GetThreads(c *routing.Context) error {
+	// выставляем заголовки, необходимые для кросс-доменного взаимодействия
 	c.Response.Header.Set("Access-Control-Allow-Origin", "http://localhost:3000")
 	c.Response.Header.Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
 	c.Response.Header.Set("Access-Control-Allow-Headers", "*")
 
+	// получаем параметр из маршрута
 	slug := c.Param("slug")
+
+	// создаем форум
 	forum := new(models.Forums)
 	forum.Slug = slug
 
+	// проверяем существует ли такой форум
 	resultForum, err := forum.GetForumBySlug(daemon.DB.Pool)
 	if err != nil {
+		log.Print(err)
 		daemon.Render.JSON(c.RequestCtx, fasthttp.StatusNotFound, nil)
 		return nil
 	}
 
+	// получаем ветки, созданные в этом форуме
 	var threads []models.Threads
 	threads, err = resultForum.GetThreadsByForum(daemon.DB.Pool)
 	if err != nil {
+		log.Print(err)
 		daemon.Render.JSON(c.RequestCtx, fasthttp.StatusBadRequest, nil)
 	}
 	daemon.Render.JSON(c.RequestCtx, fasthttp.StatusOK, threads)
